@@ -1,6 +1,6 @@
 baseURL = 'https://pt-10.github.io/'
 languageCode = 'en-us'
 title = 'PT_10'
-theme = 'PaperMod'
-publishdir = '\docs\' 
+theme = 'hugo-PaperMod'
+publishdir = 'docs'
 params.assets.disableFingerprinting = true
