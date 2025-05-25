@@ -1,6 +1,79 @@
 baseURL = 'https://pt-10.github.io/'
 languageCode = 'en-us'
-title = 'PT_10'
+title = 'Prashant Tandon'
 theme = 'hugo-PaperMod'
 publishdir = 'docs'
-params.assets.disableFingerprinting = true
+
+[params.assets]
+customCSS = ["css/custom.css"]
+disableFingerprinting = true
+favicon = "favicon.ico"
+
+
+[params.search]
+enabled = true
+
+[params]
+ShowReadingTime = true
+ShowShareButtons = false
+ShowCodeCopyButtons = true
+disableSpecial1stPost = true
+hideSummary = true
+hideHomeContent = true
+mainSections = []
+ShowAllPagesInArchive = true
+
+
+[params.homeInfoParams]
+Title = "Hi, this is Prashant!"
+Content = "I dabble with models"
+imageUrl = "static/images/profile.jpg"
+imageTitle = "My Profile Picture"
+imageWidth = "120px"
+imageHeight = "120px"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/pt-10"
+
+[[params.socialIcons]]
+name = "twitter"
+url = "https://twitter.com/yourhandle"
+
+[[params.socialIcons]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/prashant-tandon-4a7678249/"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+section = ["HTML", "RSS"]
+page = ["HTML"]
+taxonomy = ["HTML"]
+taxonomyTerm = ["HTML"]
+archive = ["HTML"]
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 3
+
+  [[menu.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 4
+
+  [[menu.main]]
+    name = "Archive"
+    url = "/archives/"
+    weight = 5

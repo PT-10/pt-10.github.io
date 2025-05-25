@@ -1,0 +1,12 @@
+<article class="first-entry home-info">
+  <header class="entry-header">
+    <h1>{{ .Site.Params.homeInfoParams.Title | markdownify }}</h1>
+  </header>
+  <div class="entry-content">
+    {{ .Site.Params.homeInfoParams.Content | markdownify }}
+  </div>
+
+  <footer class="entry-footer" style="position: fixed; bottom: 20px; left: 0; right: 0; text-align: center;">
+    {{ partial "social-icons.html" . }}
+  </footer>
+</article>
