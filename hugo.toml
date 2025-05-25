@@ -4,33 +4,39 @@ title = 'Prashant Tandon'
 theme = 'hugo-PaperMod'
 publishdir = 'docs'
 
-[params.assets]
-customCSS = ["css/custom.css"]
-disableFingerprinting = true
-favicon = "favicon.ico"
-
-
-[params.search]
-enabled = true
-
 [params]
-ShowReadingTime = true
-ShowShareButtons = false
-ShowCodeCopyButtons = true
-disableSpecial1stPost = true
-hideSummary = true
-hideHomeContent = true
-mainSections = []
-ShowAllPagesInArchive = true
+  toc = true
+  tocStartLevel = 2
+  tocEndLevel = 4
+  tocHideOnMobile = false
+  tocFloating = true
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowCodeCopyButtons = true
+  disableSpecial1stPost = true
+  hideSummary = true
+  hideHomeContent = true
+  mainSections = []
+  ShowAllPagesInArchive = true
 
+  [params.assets]
+  customCSS = ["css/custom.css"]
+  disableFingerprinting = true
+  favicon = "favicon.ico"
 
-[params.homeInfoParams]
-Title = "Hi, this is Prashant!"
-Content = "I dabble with models"
-imageUrl = "static/images/profile.jpg"
-imageTitle = "My Profile Picture"
-imageWidth = "120px"
-imageHeight = "120px"
+  [params.math]
+  enable = true
+
+  [params.search]
+  enabled = true
+
+  [params.homeInfoParams]
+  Title = "Hi, this is Prashant!"
+  Content = "I dabble with models"
+  imageUrl = "static/images/profile.jpg"
+  imageTitle = "My Profile Picture"
+  imageWidth = "120px"
+  imageHeight = "120px"
 
 [[params.socialIcons]]
 name = "github"
@@ -43,6 +49,10 @@ url = "https://twitter.com/yourhandle"
 [[params.socialIcons]]
 name = "linkedin"
 url = "https://www.linkedin.com/in/prashant-tandon-4a7678249/"
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
