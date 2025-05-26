@@ -97,6 +97,26 @@
   ]
 }
 </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
 </head>
 
 <body class="list" id="top">
@@ -173,7 +193,21 @@
         <h1>Hi, this is Prashant!</h1>
     </header>
     <div class="entry-content">
-        I dabble with models
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-top: 1rem; gap: 1rem;">
+    <div style="flex: 3; text-align: left;">
+      <p style="margin: 0.5rem 0;">A recent grad from IIT Jodhpur, having majored in AI.</p>
+      <p style="margin: 0.5rem 0;">I dabble with models and enjoy experimenting across modalities. I take interest in quite a few things: <br> autonomous driving, audio synthesis, deep learning for trading and financial investments, model inferences, llm reasoning, reinforcement learning - to name a few.</p>
+      <p style="margin: 0.5rem 0;">Neurospiking agents have piqued my interest recently and in the future I intend to explore model architectures that are more biologically aligned. </p>
+    </div>
+    <div style="flex: 1.5; margin-left: 1rem; display: flex; align-items: center;">
+      <img src="images/profile.png" class="profile-img dark-img" style="border-radius: 8px; object-fit: cover; width: 100%; height: auto;" />
+    </div>
+  </div>
+  <p style="margin: 0.5rem 0;"><strong>Unpopular opinion</strong> – LLMs don't reason and are at the end of the day just next token predictors. Reasoning is philosophical and goes beyond mere definition, read more <a href="https://plato.stanford.edu/entries/chinese-room" target="_blank">here</a>.</p>
+<p style="margin: 0.5rem 0; padding-left: 0.8rem; border-left: 3px solid #a0a0a0;">
+  I’m currently <strong>seeking research-oriented roles both in academia and industry</strong> that challenge the status quo and help unlock new frontiers in deep learning and AI.
+</p>
+
     </div>
     <footer class="entry-footer">
         <div class="social-icons">

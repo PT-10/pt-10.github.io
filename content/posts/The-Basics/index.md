@@ -85,9 +85,9 @@ Assume we know the position of the paper. Notice that for a point in the given s
   <p align="center"><em>Source: <a href="https://mbernste.github.io/posts/intrinsic_dimensionality/">Intrinsic dimensionality</a></em></p>
 </p>
 
-# Rank of a Matrix
+## Rank of a Matrix
 
-## Notion of Vector Span and Linear Independence
+### Notion of Vector Span and Linear Independence
 
 <p align="center">
   <img src="images/image%201.png" alt="Fig. 1" style="max-width: 50%; height: auto;" />
@@ -121,7 +121,7 @@ This leads us to the conclusion that for **$n$**-dimensional vectors to span **$
 - You need **$n$** number of vectors.
 - The vectors should be linearly independent.
 
-## Rank Intuition
+### Rank Intuition
 
 The first step is to visualize what a matrix represents.
 
@@ -173,11 +173,11 @@ Here, we only need a 2D surface to hold the blue vectors. Hence, the minimum dim
 *The rank of a matrix tells you the **minimum dimension of the space** holding all the vectors of the matrix → the space spanned by the vectors.*
 
 [*Example*](https://math.stackexchange.com/questions/39880/rank-of-a-matrix/39902#39902):  
-If $r(A) = 3$, it means a space of at least 3 dimensions is needed to contain all the column vectors of $A$.  
-If $r(A) = 2$, the vectors lie in a plane.  
-If $r(A) = 1$, the vectors lie along a line. Lower rank → lower volume spanned.
+  - If $r(A) = 3$, it means a space of at least 3 dimensions is needed to contain all the column vectors of $A$.  
+  - If $r(A) = 2$, the vectors lie in a plane.  
+  - If $r(A) = 1$, the vectors lie along a line. Lower rank → lower volume spanned.
 
-## Formal Definition
+### Formal Definition
 
 - The rank of a matrix is defined as the **maximum number of linearly independent (unique) rows or columns** in the matrix. It can also be understood as the **information content** of a matrix.
 - Given a matrix of size $m \times n$, the **maximum rank** is $\min(m, n)$.

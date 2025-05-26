@@ -24,7 +24,7 @@ Matrix Decomposition Factorization and(or) Decomposition When is any factorizati
       <pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate>
       
       <guid>https://pt-10.github.io/posts/the-basics/</guid>
-      <description>Linear Independence Intrinsic Dimensionality Intuition Formal Definition Notion of Vector Span and Linear Independence Rank Intuition Formal Definition A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+      <description>Linear Independence Intrinsic Dimensionality Intuition Formal Definition Rank of a Matrix Notion of Vector Span and Linear Independence Rank Intuition Formal Definition A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
 Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
 Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:</description>
     </item>
