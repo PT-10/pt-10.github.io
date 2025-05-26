@@ -1,39 +1,549 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>The Basics | Prashant Tandon</title>
-<meta name=keywords content><meta name=description content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
-Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
-$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}\ $$"><meta name=author content><link rel=canonical href=https://pt-10.github.io/posts/the-basics/><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.js onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=https://pt-10.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://pt-10.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://pt-10.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://pt-10.github.io/apple-touch-icon.png><link rel=mask-icon href=https://pt-10.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><meta property="og:title" content="The Basics"><meta property="og:description" content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
-Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
-$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}\ $$"><meta property="og:type" content="article"><meta property="og:url" content="https://pt-10.github.io/posts/the-basics/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-02-05T12:24:33+05:30"><meta property="article:modified_time" content="2025-02-05T12:24:33+05:30"><meta name=twitter:card content="summary"><meta name=twitter:title content="The Basics"><meta name=twitter:description content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
-Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
-$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}\ $$"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://pt-10.github.io/posts/"},{"@type":"ListItem","position":2,"name":"The Basics","item":"https://pt-10.github.io/posts/the-basics/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Basics","name":"The Basics","description":"A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.\nLinear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\\mathbf{v}, \\mathbf{w} \\in \\mathbb{R}^2$:\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 3 \\ 4 \\end{bmatrix}\\ $$","keywords":[],"articleBody":"A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.\nLinear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\\mathbf{v}, \\mathbf{w} \\in \\mathbb{R}^2$:\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 3 \\ 4 \\end{bmatrix}\\ $$\nThere is no scalar $c$ such that $c\\vec{v} = \\vec{w}$.\nNo linear combination of these vectors can equal the zero vector, except when all coefficients are zero.\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 2 \\ 4 \\end{bmatrix}\\ $$\nThere is a scalar $c = 2$ such that $2\\vec{v} = \\vec{w}$, so these vectors are linearly dependent.\nIn general, for vectors $\\vec{v}$ and $\\vec{w}$, they are linearly dependent if there exist scalars $a$ and $b$, not both zero, such that:\n$$ a\\vec{v} + b\\vec{w} = \\vec{0} $$\nIn the above example if $a=2$ and $b=-1$, the equation sums to zero indicating that they are linearly dependent.\nIf this equation only holds when a = b = 0, then the vectors are linearly independent.\nIntrinsic Dimensionality Intuition Imagine you run a fruit market, and you have a collection of fruits. You want to understand the variety of fruits you have. Let’s say you have a table (matrix) where each column represents a different fruit, and each row represents a specific characteristic of that fruit, such as color, size, and taste.\nApple Cherry Banana Grape Color Red Red Yellow Purple Size Medium Small Medium Small Taste Sweet Sweet Sweet Sweet Each fruit can be considered to be a datapoint $\\in \\mathbb{R}^3$\nNotice something? Every fruit is sweet. In other words, in this particular case, knowing the taste of the fruit will not help me identify it. Taste does not provide any additional information. I would only need to know the color and size of the fruit to identify one.\nTherefore, the intrinsic dimensionality here is 2, while the extrinsic dimensionality is 3.\nFormal Definition Source: Wikipedia\nThe intrinsic dimension for a data set can be thought of as the number of variables needed in a minimal representation of the data.\nWhen estimating intrinsic dimension, however, a slightly broader definition based on manifold dimension is often used -\na representation in the intrinsic dimension does only need to exist locally. intrinsic dimension estimation methods handle data sets with different intrinsic dimensions in different parts of the data set, often referred to as local intrinsic dimensionality. Let’s consider our fruit example once again -\nIt is obvious that the above set with 4 fruits is only a subset. For any realistic dataset, you’d probably have a lot more fruits (without getting into the nitty grits of what we call a “fruit”). Not all fruits are sweet. This particular subset of fruits shall have an intrinsic dimension of 2. There maybe another subset that has all sweet and red fruits - there the intrinsic dimension would be 1.\nThe same way you can also have a subset with all three attributes having unique values, then that subset would have it’s intrinsic dimension = extrinsic dimension = 3.\nHere’s another example:\nConsider a dataset of 3-dimensional points in the given space. Think of the points on the paper as a subset of points in the dataset. Assume we know the position of the paper. Notice that for a point in the given subset, i.e. the paper, you would only need 2 pieces of information to determine its position. Hence, for the points on this paper, the intrinsic dimensionality is 2.\n","wordCount":"1345","inLanguage":"en","datePublished":"2025-02-05T12:24:33+05:30","dateModified":"2025-02-05T12:24:33+05:30","mainEntityOfPage":{"@type":"WebPage","@id":"https://pt-10.github.io/posts/the-basics/"},"publisher":{"@type":"Organization","name":"Prashant Tandon","logo":{"@type":"ImageObject","url":"https://pt-10.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://pt-10.github.io/ accesskey=h title="Prashant Tandon (Alt + H)">Prashant Tandon</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://pt-10.github.io/ title=Home><span>Home</span></a></li><li><a href=https://pt-10.github.io/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://pt-10.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://pt-10.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=https://pt-10.github.io/archives/ title=Archive><span>Archive</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class=post-title>The Basics</h1><div class=post-meta><span title='2025-02-05 12:24:33 +0530 IST'>February 5, 2025</span>&nbsp;·&nbsp;7 min</div></header><div class=post-content><p>A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.</p><h1 id=linear-independence>Linear Independence<a hidden class=anchor aria-hidden=true href=#linear-independence>#</a></h1><ul><li><p>Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
-Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:</p><p>$$
-\vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}\
-$$</p><p>There is no scalar $c$ such that $c\vec{v} = \vec{w}$.</p></li><li><p>No linear combination of these vectors can equal the zero vector, except when all coefficients are zero.</p><p>$$
-\vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 2 \ 4 \end{bmatrix}\
-$$</p><p>There is a scalar $c = 2$ such that $2\vec{v} = \vec{w}$, so these vectors are linearly dependent.</p></li><li><p>In general, for vectors $\vec{v}$ and $\vec{w}$, they are linearly dependent if there exist scalars $a$ and $b$, not both zero, such that:</p><p>$$
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>The Basics | Prashant Tandon</title>
+<meta name="keywords" content="">
+<meta name="description" content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
+$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix} $$">
+<meta name="author" content="">
+<link rel="canonical" href="https://pt-10.github.io/posts/the-basics/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://pt-10.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://pt-10.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://pt-10.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://pt-10.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://pt-10.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script><meta property="og:title" content="The Basics" />
+<meta property="og:description" content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
+$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix} $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pt-10.github.io/posts/the-basics/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-02-05T12:24:33+05:30" />
+<meta property="article:modified_time" content="2025-02-05T12:24:33+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The Basics"/>
+<meta name="twitter:description" content="A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
+$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix} $$"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://pt-10.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "The Basics",
+      "item": "https://pt-10.github.io/posts/the-basics/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Basics",
+  "name": "The Basics",
+  "description": "A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.\nLinear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.\nLet us consider two vectors $\\mathbf{v}, \\mathbf{w} \\in \\mathbb{R}^2$:\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 3 \\ 4 \\end{bmatrix} $$",
+  "keywords": [
+    
+  ],
+  "articleBody": "A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.\nLinear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.\nLet us consider two vectors $\\mathbf{v}, \\mathbf{w} \\in \\mathbb{R}^2$:\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 3 \\ 4 \\end{bmatrix} $$\nThere is no scalar $c$ such that $c\\vec{v} = \\vec{w}$.\nNo linear combination of these vectors can equal the zero vector, except when all coefficients are zero.\n$$ \\vec{v} = \\begin{bmatrix} 1 \\ 2 \\end{bmatrix}, \\quad \\vec{w} = \\begin{bmatrix} 2 \\ 4 \\end{bmatrix} $$\nThere is a scalar $c = 2$ such that $2\\vec{v} = \\vec{w}$, so these vectors are linearly dependent.\nIn general, for vectors $\\vec{v}$ and $\\vec{w}$, they are linearly dependent if there exist scalars $a$ and $b$, not both zero, such that:\n$$ a\\vec{v} + b\\vec{w} = \\vec{0} $$\nIn the above example if $a = 2$ and $b = -1$, the equation sums to zero indicating that they are linearly dependent.\nIf this equation only holds when $a = b = 0$, then the vectors are linearly independent.\nIntrinsic Dimensionality Intuition Imagine you run a fruit market, and you have a collection of fruits. You want to understand the variety of fruits you have. Let’s say you have a table (matrix) where each column represents a different fruit, and each row represents a specific characteristic of that fruit, such as color, size, and taste.\nApple Cherry Banana Grape Color Red Red Yellow Purple Size Medium Small Medium Small Taste Sweet Sweet Sweet Sweet Each fruit can be considered to be a datapoint $\\in \\mathbb{R}^3$\nNotice something?\nEvery fruit is sweet. In other words, in this particular case, knowing the taste of the fruit will not help me identify it. Taste does not provide any additional information. I would only need to know the color and size of the fruit to identify one.\nTherefore, the intrinsic dimensionality here is 2, while the extrinsic dimensionality is 3.\nFormal Definition Source: Wikipedia\nThe intrinsic dimension for a data set can be thought of as the number of variables needed in a minimal representation of the data.\nWhen estimating intrinsic dimension, however, a slightly broader definition based on manifold dimension is often used -\na representation in the intrinsic dimension does only need to exist locally. intrinsic dimension estimation methods handle data sets with different intrinsic dimensions in different parts of the data set, often referred to as local intrinsic dimensionality. Let’s consider our fruit example once again -\nIt is obvious that the above set with 4 fruits is only a subset. For any realistic dataset, you’d probably have a lot more fruits (without getting into the nitty grits of what we call a “fruit”). Not all fruits are sweet. This particular subset of fruits shall have an intrinsic dimension of 2. There may be another subset that has all sweet and red fruits - there the intrinsic dimension would be 1.\nThe same way you can also have a subset with all three attributes having unique values, then that subset would have its intrinsic dimension = extrinsic dimension = 3.\nHere’s another example:\nConsider a dataset of 3-dimensional points in the given space. Think of the points on the paper as a subset of points in the dataset.\nAssume we know the position of the paper. Notice that for a point in the given subset, i.e. the paper, you would only need 2 pieces of information to determine its position. Hence, for the points on this paper, the intrinsic dimensionality is 2.\nSource: Intrinsic dimensionality\nRank of a Matrix Notion of Vector Span and Linear Independence Fig. 1\nConsider Fig. 1. Notice how the three unit vectors in blue can essentially be used to represent any vector in the 3D space via a linear combination.\nThe red vector in this case can be obtained by the sum of the unit vectors, each scaled by an appropriate scalar constant.\nNow consider Fig. 2. Notice how the two blue vectors can only describe all possible vectors on the given plane and not the entire 3D space. If I were to consider the three vectors shown on the plane in the figure, would I be able to describe all possible vectors in the extrinsic 3-dimensional space?\nThe answer is still “No”. Why?\nThe red vector is a result of some linear combination of the two blue vectors. Thus, in essence we only have two unique vectors.\nFig. 2\nFor vectors $\\bar{\\mathbf{r}}, \\bar{\\mathbf{u}}, \\bar{\\mathbf{v}}, \\bar{\\mathbf{w}} \\in \\mathbb{R}^3$, if\n$$ \\bar{\\mathbf{r}} = a\\bar{\\mathbf{u}} + b\\bar{\\mathbf{v}} + c\\bar{\\mathbf{w}} $$\nfor some scalars $a, b, c$, then the vectors $\\bar{\\mathbf{u}}, \\bar{\\mathbf{v}}, \\bar{\\mathbf{w}}$ are said to span $\\mathbb{R}^3$ if and only if they are linearly independent.\nThis leads us to the conclusion that for $n$-dimensional vectors to span $\\mathbb{R}^n$:\nYou need $n$ number of vectors. The vectors should be linearly independent. Rank Intuition The first step is to visualize what a matrix represents.\nThe matrix\n$$ \\begin{pmatrix} x_{11} \u0026 x_{13} \u0026 x_{12} \\\\ x_{21} \u0026 x_{22} \u0026 x_{23} \\\\ x_{31} \u0026 x_{32} \u0026 x_{33} \\end{pmatrix} $$ can be viewed as a set of 3 column vectors:\n$$ \\begin{pmatrix} x_{11} \\\\ x_{21} \\\\ x_{31} \\end{pmatrix}, \\quad \\begin{pmatrix} x_{12} \\\\ x_{22} \\\\ x_{32} \\end{pmatrix}, \\quad \\begin{pmatrix} x_{13} \\\\ x_{23} \\\\ x_{33} \\end{pmatrix} \\in \\mathbb{R}^3 $$\nLet’s assume the above vectors are unit vectors along the elementary axes X, Y, Z.\nThe figure shows that a unit cube is the smallest space in 3 dimensions that can hold these unit vectors.\nNow consider another matrix made up of two arbitrary vectors:\n$$ \\begin{pmatrix} x_{11} \u0026 x_{12} \\\\ x_{21} \u0026 x_{22} \\\\ x_{31} \u0026 x_{32} \\end{pmatrix}_{3 \\times 2} $$\nis composed of\n$$ \\begin{pmatrix} x_{11} \\\\ x_{21} \\\\ x_{31} \\end{pmatrix}, \\quad \\begin{pmatrix} x_{12} \\\\ x_{22} \\\\ x_{32} \\end{pmatrix} \\in \\mathbb{R}^3 $$\nHere, we only need a 2D surface to hold the blue vectors. Hence, the minimum dimension of space needed to hold all the vectors of this matrix is 2.\nFig. 3\nThe rank of a matrix tells you the minimum dimension of the space holding all the vectors of the matrix → the space spanned by the vectors.\nExample:\nIf $r(A) = 3$, it means a space of at least 3 dimensions is needed to contain all the column vectors of $A$.\nIf $r(A) = 2$, the vectors lie in a plane.\nIf $r(A) = 1$, the vectors lie along a line. Lower rank → lower volume spanned.\nFormal Definition The rank of a matrix is defined as the maximum number of linearly independent (unique) rows or columns in the matrix. It can also be understood as the information content of a matrix. Given a matrix of size $m \\times n$, the maximum rank is $\\min(m, n)$. Consider a matrix where $m \u003c n$:\nIn an $n$-dimensional space, we have $m$-dimensional vectors. Clearly, they cannot span the space and all of them cannot be linearly independent.\nExample:\nLet\n$$ A = \\begin{pmatrix} 1 \u0026 2 \u0026 3 \u0026 4 \\\\ 0 \u0026 1 \u0026 2 \u0026 3 \\end{pmatrix}_{2 \\times 4} $$\nHere, columns 3 and 4 can be written as linear combinations of columns 1 and 2. This can be intuitively understood via Fig. 3. We only require a 2-dimensional space to hold any 4 vectors, and thus the minimum dimension i.e. rank is 2.\nFig. 4\nTake any $(1 \\times n)$ or $(n \\times 1)$ matrix. This is essentially just one vector with $(n)$ dimensions. The space it spans is just a line, i.e., rank = 1.\n$$ \\text{rank}(A) = \\text{rank}(A^T) $$\nTranspose the above $(2 \\times 4)$ matrix. This gives us a $(4 \\times 2)$ matrix, i.e., two 4-dimensional vectors. This would be similar to the case in Figure 3. We would only be able to span a 2-dimensional plane and the rank would remain 2.\nRow rank = Column rank.\nIf the $(m)$ rows are linearly independent, then $(n)$ columns cannot be linearly independent, and vice versa.\nA full rank matrix is a matrix where all its rows (or columns) are linearly independent. This means maximum rank.\nA matrix is full-rank when the determinant is non-zero, which also implies that it is invertible.\n",
+  "wordCount" : "1387",
+  "inLanguage": "en",
+  "datePublished": "2025-02-05T12:24:33+05:30",
+  "dateModified": "2025-02-05T12:24:33+05:30",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://pt-10.github.io/posts/the-basics/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Prashant Tandon",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://pt-10.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://pt-10.github.io/" accesskey="h" title="Prashant Tandon (Alt + H)">Prashant Tandon</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://pt-10.github.io/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      The Basics
+    </h1>
+    <div class="post-meta"><span title='2025-02-05 12:24:33 +0530 IST'>February 5, 2025</span>&nbsp;·&nbsp;7 min
+
+</div>
+  </header> 
+  <div class="post-content"><p>A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.</p>
+<h1 id="linear-independence">Linear Independence<a hidden class="anchor" aria-hidden="true" href="#linear-independence">#</a></h1>
+<ul>
+<li>
+<p>Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.<br>
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:</p>
+<p>$$
+\vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}
+$$</p>
+<p>There is no scalar $c$ such that $c\vec{v} = \vec{w}$.</p>
+</li>
+<li>
+<p>No linear combination of these vectors can equal the zero vector, except when all coefficients are zero.</p>
+<p>$$
+\vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 2 \ 4 \end{bmatrix}
+$$</p>
+<p>There is a scalar $c = 2$ such that $2\vec{v} = \vec{w}$, so these vectors are linearly dependent.</p>
+</li>
+<li>
+<p>In general, for vectors $\vec{v}$ and $\vec{w}$, they are linearly dependent if there exist scalars $a$ and $b$, not both zero, such that:</p>
+<p>$$
 a\vec{v} + b\vec{w} = \vec{0}
-$$</p><p>In the above example if $a=2$ and $b=-1$, the equation sums to zero indicating that they are linearly dependent.</p></li><li><p>If this equation only holds when a = b = 0, then the vectors are linearly independent.</p></li></ul><h1 id=intrinsic-dimensionality>Intrinsic Dimensionality<a hidden class=anchor aria-hidden=true href=#intrinsic-dimensionality>#</a></h1><h3 id=intuition>Intuition<a hidden class=anchor aria-hidden=true href=#intuition>#</a></h3><p>Imagine you run a fruit market, and you have a collection of fruits. You want to understand the variety of fruits you have. Let’s say you have a table (matrix) where each column represents a different fruit, and each row represents a specific characteristic of that fruit, such as color, size, and taste.</p><table><thead><tr><th></th><th>Apple</th><th>Cherry</th><th>Banana</th><th>Grape</th></tr></thead><tbody><tr><td>Color</td><td>Red</td><td>Red</td><td>Yellow</td><td>Purple</td></tr><tr><td>Size</td><td>Medium</td><td>Small</td><td>Medium</td><td>Small</td></tr><tr><td>Taste</td><td>Sweet</td><td>Sweet</td><td>Sweet</td><td>Sweet</td></tr></tbody></table><p>Each fruit can be considered to be a datapoint $\in \mathbb{R}^3$</p><p><strong>Notice something?</strong>
-Every fruit is sweet. In other words, in this particular case, knowing the taste of the fruit will not help me identify it. Taste does not provide any additional information. I would only need to know the color and size of the fruit to identify one.</p><p>Therefore, the intrinsic dimensionality here is 2, while the extrinsic dimensionality is 3.</p><h3 id=formal-definition>Formal Definition<a hidden class=anchor aria-hidden=true href=#formal-definition>#</a></h3><p>Source: <a href=https://en.wikipedia.org/wiki/Intrinsic_dimension>Wikipedia</a></p><p>The intrinsic dimension for a data set can be thought of as the number of variables needed in a minimal representation of the data.</p><p><em>When estimating intrinsic dimension, however, a slightly broader definition based on manifold dimension is often used -</em></p><ul><li><em>a representation in the intrinsic dimension does only need to exist locally.</em></li><li><em>intrinsic dimension estimation methods handle data sets with different intrinsic dimensions in different parts of the data set, often referred to as <a href=https://en.wikipedia.org/wiki/Intrinsic_dimension#Local_Intrinsic_Dimensionality>local intrinsic dimensionality</a>.</em></li></ul><p>Let’s consider our fruit example once again -</p><p>It is obvious that the above set with 4 fruits is only a subset. For any realistic dataset, you’d probably have a lot more fruits (without getting into the nitty grits of what we call a “fruit”). Not all fruits are sweet. This particular subset of fruits shall have an intrinsic dimension of 2. There maybe another subset that has all sweet and red fruits - there the intrinsic dimension would be 1.</p><p>The same way you can also have a subset with all three attributes having unique values, then that subset would have it’s intrinsic dimension = extrinsic dimension = 3.</p><p>Here’s another example:</p><p>Consider a dataset of 3-dimensional points in the given space. Think of the points on the paper as a subset of points in the dataset.
-Assume we know the position of the paper. Notice that for a point in the given subset, i.e. the paper, you would only need 2 pieces of information to determine its position. Hence, for the points on this paper, the intrinsic dimensionality is 2.</p><p><img loading=lazy src=images/image.png alt='Source: <a href="https://mbernste.github.io/posts/intrinsic_dimensionality/">Intrinsic dimensionality</a>'></p><p>Source: <a href=https://mbernste.github.io/posts/intrinsic_dimensionality/>Intrinsic dimensionality</a></p><h1 id=rank-of-a-matrix>Rank of a Matrix<a hidden class=anchor aria-hidden=true href=#rank-of-a-matrix>#</a></h1><h3 id=notion-of-vector-span-and-linear-independence>Notion of Vector Span and Linear Independence<a hidden class=anchor aria-hidden=true href=#notion-of-vector-span-and-linear-independence>#</a></h3><p><img loading=lazy src=images/image%201.png alt="Fig. 1"></p><p>Fig. 1</p><p>Consider Fig. 1. Notice how the three unit vectors in blue can essentially be used to represent any vector in the 3D space via a linear combination.</p><p>The red vector in this case can be obtained by the sum of the unit vectors, each scaled by an appropriate scalar constant.</p><p>Now consider Fig. 2, notice how the two blue vectors can only describe all possible vectors on the given plane and not the entire 3D space. If I were to consider the three vectors shown on the plane in the figure, would I be able to describe all possible vectors in the extrinsic 3-dimensional space?</p><p>The answer is still “No”. Why?
-The red vector is a result of some linear combination of the two blue vectors. Thus, in essence we only have two unique vectors.</p><p><img loading=lazy src=images/image%202.png alt="Fig. 2"></p><p>Fig. 2</p><p>For vectors $\bar{\mathbf{r}}, \bar{\mathbf{u}}, \bar{\mathbf{v}}, \bar{\mathbf{w}} \in \mathbb{R}^3$, if $\bar{\mathbf{r}} = a\bar{\mathbf{u}} + b\bar{\mathbf{v}} + c\bar{\mathbf{w}}$ for some scalars $a,b,c$ then the vectors $\bar{\mathbf{u}}, \bar{\mathbf{v}}, \bar{\mathbf{w}}$ are said to span $\mathbb{R}^3$ if and only if they are linearly independent.</p><p>This leads us to the conclusion that for <strong>$n$</strong>-dimensional vectors to span <strong>$\mathbb{R}^n$</strong>:</p><ul><li>You need <strong>$n$</strong> number of vectors.</li><li>The vectors should be linearly independent.</li></ul><h2 id=rank-intuition>Rank Intuition<a hidden class=anchor aria-hidden=true href=#rank-intuition>#</a></h2><p>The first step is to visualize what a matrix represents.</p><p>The matrix
-$$
+$$</p>
+<p>In the above example if $a = 2$ and $b = -1$, the equation sums to zero indicating that they are linearly dependent.</p>
+</li>
+<li>
+<p>If this equation only holds when $a = b = 0$, then the vectors are linearly independent.</p>
+</li>
+</ul>
+<h1 id="intrinsic-dimensionality">Intrinsic Dimensionality<a hidden class="anchor" aria-hidden="true" href="#intrinsic-dimensionality">#</a></h1>
+<h3 id="intuition">Intuition<a hidden class="anchor" aria-hidden="true" href="#intuition">#</a></h3>
+<p>Imagine you run a fruit market, and you have a collection of fruits. You want to understand the variety of fruits you have. Let’s say you have a table (matrix) where each column represents a different fruit, and each row represents a specific characteristic of that fruit, such as color, size, and taste.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Apple</th>
+<th>Cherry</th>
+<th>Banana</th>
+<th>Grape</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Color</td>
+<td>Red</td>
+<td>Red</td>
+<td>Yellow</td>
+<td>Purple</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>Medium</td>
+<td>Small</td>
+<td>Medium</td>
+<td>Small</td>
+</tr>
+<tr>
+<td>Taste</td>
+<td>Sweet</td>
+<td>Sweet</td>
+<td>Sweet</td>
+<td>Sweet</td>
+</tr>
+</tbody>
+</table>
+<p>Each fruit can be considered to be a datapoint $\in \mathbb{R}^3$</p>
+<p><strong>Notice something?</strong><br>
+Every fruit is sweet. In other words, in this particular case, knowing the taste of the fruit will not help me identify it. Taste does not provide any additional information. I would only need to know the color and size of the fruit to identify one.</p>
+<p>Therefore, the intrinsic dimensionality here is 2, while the extrinsic dimensionality is 3.</p>
+<h3 id="formal-definition">Formal Definition<a hidden class="anchor" aria-hidden="true" href="#formal-definition">#</a></h3>
+<p>Source: <a href="https://en.wikipedia.org/wiki/Intrinsic_dimension">Wikipedia</a></p>
+<p>The intrinsic dimension for a data set can be thought of as the number of variables needed in a minimal representation of the data.</p>
+<p><em>When estimating intrinsic dimension, however, a slightly broader definition based on manifold dimension is often used -</em></p>
+<ul>
+<li><em>a representation in the intrinsic dimension does only need to exist locally.</em></li>
+<li><em>intrinsic dimension estimation methods handle data sets with different intrinsic dimensions in different parts of the data set, often referred to as <a href="https://en.wikipedia.org/wiki/Intrinsic_dimension#Local_Intrinsic_Dimensionality">local intrinsic dimensionality</a>.</em></li>
+</ul>
+<p>Let’s consider our fruit example once again -</p>
+<p>It is obvious that the above set with 4 fruits is only a subset. For any realistic dataset, you’d probably have a lot more fruits (without getting into the nitty grits of what we call a “fruit”). Not all fruits are sweet. This particular subset of fruits shall have an intrinsic dimension of 2. There may be another subset that has all sweet and red fruits - there the intrinsic dimension would be 1.</p>
+<p>The same way you can also have a subset with all three attributes having unique values, then that subset would have its intrinsic dimension = extrinsic dimension = 3.</p>
+<p>Here’s another example:</p>
+<p>Consider a dataset of 3-dimensional points in the given space. Think of the points on the paper as a subset of points in the dataset.<br>
+Assume we know the position of the paper. Notice that for a point in the given subset, i.e. the paper, you would only need 2 pieces of information to determine its position. Hence, for the points on this paper, the intrinsic dimensionality is 2.</p>
+<p align="center">
+  <img src="images/image.png" alt="Intrinsic dimensionality example" style="max-width: 50%; height: auto;" />
+  <p align="center"><em>Source: <a href="https://mbernste.github.io/posts/intrinsic_dimensionality/">Intrinsic dimensionality</a></em></p>
+</p>
+<h1 id="rank-of-a-matrix">Rank of a Matrix<a hidden class="anchor" aria-hidden="true" href="#rank-of-a-matrix">#</a></h1>
+<h3 id="notion-of-vector-span-and-linear-independence">Notion of Vector Span and Linear Independence<a hidden class="anchor" aria-hidden="true" href="#notion-of-vector-span-and-linear-independence">#</a></h3>
+<p align="center">
+  <img src="images/image%201.png" alt="Fig. 1" style="max-width: 50%; height: auto;" />
+  <p align="center"><em>Fig. 1</em></p>
+</p>
+<p>Consider Fig. 1. Notice how the three unit vectors in blue can essentially be used to represent any vector in the 3D space via a linear combination.</p>
+<p>The red vector in this case can be obtained by the sum of the unit vectors, each scaled by an appropriate scalar constant.</p>
+<p>Now consider Fig. 2. Notice how the two blue vectors can only describe all possible vectors on the given plane and not the entire 3D space. If I were to consider the three vectors shown on the plane in the figure, would I be able to describe all possible vectors in the extrinsic 3-dimensional space?</p>
+<p>The answer is still “No”. Why?<br>
+The red vector is a result of some linear combination of the two blue vectors. Thus, in essence we only have two unique vectors.</p>
+<p align="center">
+  <img src="images/image%202.png" alt="Fig. 2" style="max-width: 50%; height: auto;" />
+  <p align="center"><em>Fig. 2</em></p>
+</p>
+<p>For vectors $\bar{\mathbf{r}}, \bar{\mathbf{u}}, \bar{\mathbf{v}}, \bar{\mathbf{w}} \in \mathbb{R}^3$, if</p>
+<p>$$
+\bar{\mathbf{r}} = a\bar{\mathbf{u}} + b\bar{\mathbf{v}} + c\bar{\mathbf{w}}
+$$</p>
+<p>for some scalars $a, b, c$, then the vectors $\bar{\mathbf{u}}, \bar{\mathbf{v}}, \bar{\mathbf{w}}$ are said to span $\mathbb{R}^3$ if and only if they are linearly independent.</p>
+<p>This leads us to the conclusion that for <strong>$n$</strong>-dimensional vectors to span <strong>$\mathbb{R}^n$</strong>:</p>
+<ul>
+<li>You need <strong>$n$</strong> number of vectors.</li>
+<li>The vectors should be linearly independent.</li>
+</ul>
+<h2 id="rank-intuition">Rank Intuition<a hidden class="anchor" aria-hidden="true" href="#rank-intuition">#</a></h2>
+<p>The first step is to visualize what a matrix represents.</p>
+<p>The matrix</p>
+<p>$$
 \begin{pmatrix}
-x_{11} & x_{13} & x_{12} \
-x_{21} & x_{22} & x_{23} \
-x_{31} & x_{32} & x_{33}
+x_{11} &amp; x_{13} &amp; x_{12} \\
+x_{21} &amp; x_{22} &amp; x_{23} \\
+x_{31} &amp; x_{32} &amp; x_{33}
 \end{pmatrix}
-$$</p><p>can be viewed as a set of 3 column vectors -</p><p><img loading=lazy src=images/image%201.png alt="Fig. 1"></p><p>Fig. 1</p><p>$$
-\begin{pmatrix}x_{11} \x_{21} \x_{31}\end{pmatrix}</p><p>\begin{pmatrix}x_{12} \x_{22} \x_{32}\end{pmatrix}</p><p>\begin{pmatrix}x_{13} \x_{23} \x_{33}\end{pmatrix} \in \mathbb{R}^3
-$$</p><p>Let’s assume the above vectors are unit vectors along the elementary axis X, Y, Z.</p><p>The figure shows that a unit cube is the smallest space in 3 dimensions that can hold these unit vectors.</p><p>Consider another example of a matrix made up of two arbitrary vectors</p><p>$\begin{pmatrix}x_{11} & x_{12}\x_{21} & x_{22} \x_{31} & x_{32} \end{pmatrix}<em>{3 \times 2}$
-is composed of
-$\begin{pmatrix}x</em>{11} \x_{21} \x_{31}\end{pmatrix}</p><p>\begin{pmatrix}x_{12} \x_{22} \x_{32}\end{pmatrix} \in \mathbb{R}^3$</p><p>Notice, here we only need a 2D surface to hold the blue vectors. Hence, the minimum dimension of space needed to hold all the vectors of this matrix is 2.</p><p><img loading=lazy src=images/image%203.png alt="Fig. 3"></p><p>Fig. 3</p><p><em>The rank of a matrix actually tells you what is the <strong>minimum dimension of the space</strong> holding all the vectors of the matrix → space spanned by the vectors.</em></p><p><a href=https://math.stackexchange.com/questions/39880/rank-of-a-matrix/39902#39902>*Example:</a>
-If r(A)=3, it means, in order to contain all the column vectors of A, a space of at least 3 dimension is a must. If r(A)=2, it means the vectors are in fact lying in a plane, or r(A)=1, lying within a line, either of which holds a zero volume.*</p><h2 id=formal-definition-1>Formal Definition<a hidden class=anchor aria-hidden=true href=#formal-definition-1>#</a></h2><ul><li>The rank of a matrix is defined as the <strong>minimum number of linearly independent (unique) rows</strong> or columns in the matrix. It can also be understood as the <strong>information content of a matrix</strong>.</li><li>Given a matrix $m$ x $n$, the <strong>maximum rank</strong> of a matrix is $min(m,n)$.</li></ul><p>Consider an $m$ x $n$ matrix where $m&lt;n$</p><p>In an $n$-dimensional space we have $m$-dimensional vectors. Clearly, they cannot span the space and all of them cannot be linearly independent.
-<strong>Example:</strong>
-Consider $A = \begin{pmatrix}
-1 & 2 & 3 & 4 \
-0 & 1 & 2 & 3
-\end{pmatrix}_{2 \times 4}$
-Here, column 3 and 4 can be represented as a linear combination of 1 and 2. This can intuitively be understood via Figure 3. We only require a 2-dimensional space to hold any 4 vectors, and thus the minimum dimension i.e. rank is 2</p><p><img loading=lazy src=images/image%204.png alt="Fig. 4"></p><p>Fig. 4</p><p>Take any $1$ x $n$ or $n$ x $1$ matrix. This is essentially just 1 vector with “n” dimensions. The space it spans is just a line i.e. rank = 1.</p><ul><li>$rank(A) = rank(A^T)$<ul><li>Transpose the above 2x4 matrix. This gives us a 4x2 matrix i.e. two 4-dimensional vectors. This would be similar to the case in Figure 3. We would only be able to span a 2-dimensional plane and the rank would remain 2.</li></ul></li><li><strong>Row rank = Column Rank.</strong> If the m rows are linearly independent, then n columns cannot be linearly independent, vice-versa.</li><li>A full rank matrix is a matrix where all its rows(columns) are linearly independent. This means maximum rank.</li><li>A matrix is full-rank when the determinant is non-zero which also implies that it is invertible.</li></ul></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://pt-10.github.io/>Prashant Tandon</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+$$
+can be viewed as a set of 3 column vectors:</p>
+<p>$$
+\begin{pmatrix} x_{11} \\ x_{21} \\ x_{31} \end{pmatrix}, \quad
+\begin{pmatrix} x_{12} \\ x_{22} \\ x_{32} \end{pmatrix}, \quad
+\begin{pmatrix} x_{13} \\ x_{23} \\ x_{33} \end{pmatrix} \in \mathbb{R}^3
+$$</p>
+<p>Let’s assume the above vectors are unit vectors along the elementary axes X, Y, Z.</p>
+<p>The figure shows that a unit cube is the smallest space in 3 dimensions that can hold these unit vectors.</p>
+<p>Now consider another matrix made up of two arbitrary vectors:</p>
+<p>$$
+\begin{pmatrix}
+x_{11} &amp; x_{12} \\
+x_{21} &amp; x_{22} \\
+x_{31} &amp; x_{32}
+\end{pmatrix}_{3 \times 2}
+$$</p>
+<p>is composed of</p>
+<p>$$
+\begin{pmatrix} x_{11} \\ x_{21} \\ x_{31} \end{pmatrix}, \quad
+\begin{pmatrix} x_{12} \\ x_{22} \\ x_{32} \end{pmatrix} \in \mathbb{R}^3
+$$</p>
+<p>Here, we only need a 2D surface to hold the blue vectors. Hence, the minimum dimension of space needed to hold all the vectors of this matrix is 2.</p>
+<p align="center">
+  <img src="images/image%203.png" alt="Fig. 3" style="max-width: 50%; height: auto;" />
+  <p align="center"><em>Fig. 3</em></p>
+</p>
+<p><em>The rank of a matrix tells you the <strong>minimum dimension of the space</strong> holding all the vectors of the matrix → the space spanned by the vectors.</em></p>
+<p><a href="https://math.stackexchange.com/questions/39880/rank-of-a-matrix/39902#39902"><em>Example</em></a>:<br>
+If $r(A) = 3$, it means a space of at least 3 dimensions is needed to contain all the column vectors of $A$.<br>
+If $r(A) = 2$, the vectors lie in a plane.<br>
+If $r(A) = 1$, the vectors lie along a line. Lower rank → lower volume spanned.</p>
+<h2 id="formal-definition-1">Formal Definition<a hidden class="anchor" aria-hidden="true" href="#formal-definition-1">#</a></h2>
+<ul>
+<li>The rank of a matrix is defined as the <strong>maximum number of linearly independent (unique) rows or columns</strong> in the matrix. It can also be understood as the <strong>information content</strong> of a matrix.</li>
+<li>Given a matrix of size $m \times n$, the <strong>maximum rank</strong> is $\min(m, n)$.</li>
+</ul>
+<p>Consider a matrix where $m &lt; n$:</p>
+<p>In an $n$-dimensional space, we have $m$-dimensional vectors. Clearly, they cannot span the space and all of them cannot be linearly independent.</p>
+<p><strong>Example:</strong><br>
+Let</p>
+<p>$$
+A = \begin{pmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 \\
+0 &amp; 1 &amp; 2 &amp; 3
+\end{pmatrix}_{2 \times 4}
+$$</p>
+<p>Here, columns 3 and 4 can be written as linear combinations of columns 1 and 2. This can be intuitively understood via Fig. 3. We only require a 2-dimensional space to hold any 4 vectors, and thus the minimum dimension i.e. rank is 2.</p>
+<p align="center">
+  <img src="images/image%204.png" alt="Fig. 4" style="max-width: 50%; height: auto;" />
+  <p align="center"><em>Fig. 4</em></p>
+</p>
+<p>Take any $(1 \times n)$ or $(n \times 1)$ matrix. This is essentially just one vector with $(n)$ dimensions. The space it spans is just a line, i.e., rank = 1.</p>
+<p>$$
+\text{rank}(A) = \text{rank}(A^T)
+$$</p>
+<p>Transpose the above $(2 \times 4)$ matrix. This gives us a $(4 \times 2)$ matrix, i.e., two 4-dimensional vectors. This would be similar to the case in Figure 3. We would only be able to span a 2-dimensional plane and the rank would remain 2.</p>
+<ul>
+<li>
+<p><strong>Row rank = Column rank.</strong></p>
+</li>
+<li>
+<p>If the $(m)$ rows are linearly independent, then $(n)$ columns cannot be linearly independent, and vice versa.</p>
+</li>
+<li>
+<p>A <strong>full rank matrix</strong> is a matrix where all its rows (or columns) are linearly independent. This means maximum rank.</p>
+</li>
+<li>
+<p>A matrix is full-rank when the <strong>determinant is non-zero</strong>, which also implies that it is <strong>invertible</strong>.</p>
+</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://pt-10.github.io/">Prashant Tandon</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

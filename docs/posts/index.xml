@@ -1,5 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Prashant Tandon</title><link>https://pt-10.github.io/posts/</link><description>Recent content in Posts on Prashant Tandon</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 12:24:33 +0530</lastBuildDate><atom:link href="https://pt-10.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>The Basics</title><link>https://pt-10.github.io/posts/the-basics/</link><pubDate>Wed, 05 Feb 2025 12:24:33 +0530</pubDate><guid>https://pt-10.github.io/posts/the-basics/</guid><description>A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
-Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other. Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
-$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix}\ $$</description></item><item><title>Intuition behind Optimization</title><link>https://pt-10.github.io/posts/post1/</link><pubDate>Fri, 27 Oct 2023 10:59:30 +0530</pubDate><guid>https://pt-10.github.io/posts/post1/</guid><description>An attempt to explore the intuition of optimization &amp;ndash; how minimizing an objective results in optimal parameters.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Prashant Tandon</title>
+    <link>https://pt-10.github.io/posts/</link>
+    <description>Recent content in Posts on Prashant Tandon</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Feb 2025 12:24:33 +0530</lastBuildDate><atom:link href="https://pt-10.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Basics</title>
+      <link>https://pt-10.github.io/posts/the-basics/</link>
+      <pubDate>Wed, 05 Feb 2025 12:24:33 +0530</pubDate>
+      
+      <guid>https://pt-10.github.io/posts/the-basics/</guid>
+      <description>A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
+$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix} $$</description>
+    </item>
+    
+    <item>
+      <title>Intuition behind Optimization</title>
+      <link>https://pt-10.github.io/posts/post1/</link>
+      <pubDate>Fri, 27 Oct 2023 10:59:30 +0530</pubDate>
+      
+      <guid>https://pt-10.github.io/posts/post1/</guid>
+      <description>An attempt to explore the intuition of optimization &amp;ndash; how minimizing an objective results in optimal parameters.
 The Idea Remember the last time you picked up only a few important things to read, a day before an exam. What you did there was optimize your available time (not really, but for the day) to maximize your output (marks).
-In machine learning, the idea of optimization revolves around improving metrics like F1 score, accuracy of models etc.</description></item></channel></rss>
+In machine learning, the idea of optimization revolves around improving metrics like F1 score, accuracy of models etc.</description>
+    </item>
+    
+  </channel>
+</rss>
