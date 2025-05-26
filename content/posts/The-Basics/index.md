@@ -3,14 +3,14 @@ title: "The Basics"
 math: true
 toc: true
 
-date: 2025-02-05T12:24:33+05:30
+date: 2024-10-10
 
 ---
-
+{{< toc >}}
 
 A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
 
-# Linear Independence
+## Linear Independence
 
 - Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.  
   Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
@@ -39,7 +39,7 @@ A primer to a few key concepts in linear algebra that would eventually help buil
 
 - If this equation only holds when $a = b = 0$, then the vectors are linearly independent.
 
-# Intrinsic Dimensionality
+## Intrinsic Dimensionality
 
 ### Intuition
 
@@ -87,7 +87,7 @@ Assume we know the position of the paper. Notice that for a point in the given s
 
 # Rank of a Matrix
 
-### Notion of Vector Span and Linear Independence
+## Notion of Vector Span and Linear Independence
 
 <p align="center">
   <img src="images/image%201.png" alt="Fig. 1" style="max-width: 50%; height: auto;" />

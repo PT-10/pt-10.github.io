@@ -2,14 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://pt-10.github.io/posts/matrices-in-practice/</loc>
+    <lastmod>2024-10-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://pt-10.github.io/posts/</loc>
-    <lastmod>2025-02-05T12:24:33+05:30</lastmod>
+    <lastmod>2024-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://pt-10.github.io/</loc>
-    <lastmod>2025-02-05T12:24:33+05:30</lastmod>
+    <lastmod>2024-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://pt-10.github.io/posts/the-basics/</loc>
-    <lastmod>2025-02-05T12:24:33+05:30</lastmod>
+    <lastmod>2024-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://pt-10.github.io/posts/post1/</loc>
     <lastmod>2023-10-27T10:59:30+05:30</lastmod>

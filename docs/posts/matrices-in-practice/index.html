@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Matrices in Practice | Prashant Tandon</title>
+<meta name="keywords" content="">
+<meta name="description" content="Matrix Decomposition vs Low Rank Approximation
+For the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.
+Matrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts.">
+<meta name="author" content="">
+<link rel="canonical" href="https://pt-10.github.io/posts/matrices-in-practice/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://pt-10.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://pt-10.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://pt-10.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://pt-10.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://pt-10.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script><meta property="og:title" content="Matrices in Practice" />
+<meta property="og:description" content="Matrix Decomposition vs Low Rank Approximation
+For the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.
+Matrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pt-10.github.io/posts/matrices-in-practice/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-10-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-10-10T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Matrices in Practice"/>
+<meta name="twitter:description" content="Matrix Decomposition vs Low Rank Approximation
+For the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.
+Matrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://pt-10.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Matrices in Practice",
+      "item": "https://pt-10.github.io/posts/matrices-in-practice/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Matrices in Practice",
+  "name": "Matrices in Practice",
+  "description": "Matrix Decomposition vs Low Rank Approximation\nFor the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.\nMatrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts.",
+  "keywords": [
+    
+  ],
+  "articleBody": " Matrix Decomposition vs Low Rank Approximation\nFor the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.\nMatrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts. It is the same as factorization. Just like integers that can be factorized and written as the product of two or more integers, the same is true for matrices.\n“Any rectangular matrix can be written as the non-unique product of two or more matrices.”\nWhile the above statement is true, not every possible decomposition is useful.\nWhen is any factorization useful? They are essentially used to solve systems of linear equations in an efficient manner. There’s a whole list at Matrix decomposition - Wikipedia.\nIntuitively, a factorization would be useful when the component matrices hold some specific properties, or are smaller - making it easy to compute stuff.\nRank Factorization Rank Factorization is a type of matrix decomposition method. Let $A$ be a matrix of dimension $m$ x $n$ with $rank(A) ≥ 1$, then $(P, Q)$ is said to be a rank-factorization of $A$ if:\n$P$ is of order $m \\times k$ $Q$ is of order $k \\times n$ and $A = PQ$. Rank factorization of $A_{m \\times n} = P_{m \\times k}Q_{k \\times n}$ where $k = rank(A)$.\nEvery finite-dimensional, non-null matrix has a rank decomposition. Rank decomposition is non-unique. Proof: Rank factorization - Wikipedia or Rank-Factorization of a Matrix\nFactorizing A as a thin matrix with m rows, fat matrix with n columns.\nAssume that each element in the matrix takes up $b$-bits, then:\nStoring $A$ requires $(m \\times n) \\times b$ bits of storage. Storing $P$ and $Q$ requires $k\\times(m+n)\\times b$ bits of storage. Given a vector $x$, computing $Ax$ requires $m\\times n$ flops. Given a vector $x$, computing the rank-decomposition of $A$ times $x$ i.e. $P(Qx)$ requires $k\\times (m \\times n)$ flops. Example 1:\nConsider the following matrices\n$A = \\begin{pmatrix}1 \u0026 2 \u0026 3 \\\\\\ 4 \u0026 5 \u0026 6 \\\\\\ 7 \u0026 8 \u0026 9 \\\\\\ 10 \u0026 11 \u0026 12\\end{pmatrix}$, $P = \\begin{pmatrix}1 \u0026 0 \\\\\\ 0 \u0026 1 \\\\\\ 1 \u0026 1 \\\\\\ 1 \u0026 1\\end{pmatrix}$, $Q = \\begin{pmatrix}1 \u0026 2 \u0026 3 \\\\\\ 4 \u0026 5 \u0026 6\\end{pmatrix}$\rReduced row echelon form of $A$ gives us: $\\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 0 \u0026 -3 \u0026 -6 \\\\ 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 0\\end{pmatrix}$ where there are only two non-zero rows. This tells us that $A$ has a rank of 2. Thus, a possible rank factorization of $A$ is $PQ$.\nHere, if $A$ was stored as is, you would store 12 elements, whereas storing it’s components $P$ and $Q$ implies 14 elements. Thus factorization didn’t really help in this case.\nExample 2:\nNow, consider another set of matrices $A = \\begin{pmatrix}10 \u0026 12 \u0026 14 \\\\ 15 \u0026 18 \u0026 21 \\\\ 5 \u0026 6 \u0026 7 \\\\ 20 \u0026 24 \u0026 28\\end{pmatrix}$, $P = \\begin{pmatrix}2 \\\\ 3 \\\\ 1 \\\\ 4\\end{pmatrix}$, $Q = \\begin{pmatrix}5 \u0026 6 \u0026 7\\end{pmatrix}$ Reduced row echelon form of A gives us: $$\\begin{pmatrix} 10 \u0026 12 \u0026 14 \\\\ 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 0\\end{pmatrix}$$\nwhere there is only one non-zero rows. This tells us that A has a rank of 1. Thus, a possible rank factorization of $A = PQ$.\nHere, if $A$ was stored as is, you would store 12 elements, whereas storing it’s components $P$ and $Q$ implies just 7 elements. Thus factorization helps in this case.\nWhen is rank factorization useful? Rank factorization becomes quite useful when the rank-$k$ is relatively small compared to the matrix dimensions. However, note that a small rank is consequence of the method’s usefulness and not a constraint to begin with.\nThus, we want $A_{m \\times n}$ to be a low rank matrix where $k \\ll min(m, n)$.\nThe focus here is essentially on storage and compute. Instead of storing the entire matrix as it is, you store its components, making it memory efficient.\nLow Rank Approximation The primary goal is to identify the “best” way to approximate a given matrix A with a rank-k matrix, for a target rank k. Such a matrix is called a low-rank approximation.\nIntuition Here’s an intuitive example of what low rank approximation is and why it would be used: Big Ideas in Applied Math: Low-rank Matrices – Ethan N. Epperly (ethanepperly.com)\nThe example talks about weather data. Say you had 1000 stations recording stats on all 365 days. You could arrange it as a matrix like -\n$$ W = \\begin{pmatrix}\\text{D}_{1} \u0026 \\text{D}_{2} \u0026\\cdots \u0026 \\cdots \u0026 \\text{D}_{365}\\\\\\text{S}_{1} \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots\\\\\\text{S}_{2} \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots\\\\\\vdots \u0026 \\vdots \u0026 \\vdots \u0026 \\vdots \u0026 \\vdots \\\\\\text{S}_{1000} \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots \u0026 \\cdots \\end{pmatrix}_{1000 \\times 365} $$\rwith each column represent a day’s data across all the 1000 stations. That would give us 365,000 elements.\n“However, we have reasons to believe that significant compression is possible. Temperatures are correlated across space and time: If it’s hot in Arizona today, it’s likely it was warm in Utah yesterday. If we are particularly bold, we might conjecture that the weather approximately experiences a sinusoidal variation over the course of the year:\n$$ \\text{temperature at station i on day j} = a_i+ b_isin(2 \\pi \\times \\frac{j}{365} + \\phi) $$\nFor the sake of simplicity and representation, let me denote $sin(2 \\pi \\times \\frac{j}{365} + \\phi) = f(j, \\phi)$. Hence, our new matrix where each element is approximated would be:\n$$ {W} \\approx \\begin{pmatrix}a_1+ b_1f(1, \\phi) \u0026 a_1+ b_1f(2, \\phi) \u0026\\cdots \u0026 a_1+ b_1f(365, \\phi)\\\\\\vdots \u0026 \\vdots \u0026 \\vdots \u0026 \\vdots\\\\a_{1000}+ b_{1000}f(1, \\phi) \u0026 \\cdots \u0026 \\cdots \u0026 a_{1000}+ b_{1000}f(365, \\phi)\\end{pmatrix} = \\hat{W} $$\rNotice that for each row you essentially need the coefficients $a_i, b_i$ while the value is then parametrically defined. Thus, in total we would now need 1000 a’s and 1000 b’s i.e. 2000 numbers instead of 365,000 to represent our information. Relate this to intrinsic dimensionality as being the minimum pieces of information required to represent your data.\nThe matrix $\\hat{W}$ has a rank of 2 while $W$ has a maximal possible rank of 365 (since it is the minimum of two dimensional factors of the matrix).\n“This example is suggestive that low-rank approximation, where we approximate a general matrix by one of much lower rank, could be a powerful tool.”\nApplications Examples from CSE 422 Lecture 9 at UW\nImage Compression: Let $A$ represent an image (with entries = pixel intensities). $m$ and $n$ are typically in the 100s. In With images, a modest value of $k$ (say 100 or 150) is usually enough to achieve approximations that look a lot like the original image. De-noising: If $A$ is a noisy version of some “ground truth” signal that is approximately low-rank, then passing to a low-rank approximation of the raw data $A$ might throw out lots of noise and little signal, resulting in a matrix that is actually more informative than the original. Low rank approximation and Rank factorization Low rank approximation is essentially finding a matrix of lower rank that closely compares to the original matrix. Hence, there is always some loss of information. Not every matrix is well-approximated by one of small rank. A matrix may be excellently approximated by a rank-100 matrix and horribly approximated by a rank-90 matrix. Rank factorization on the other hand is simply representing a low rank matrix as a product of two matrices with maximal rank $k « min(m,n)$. For example, if we store a rank factorization of the low-rank approximation from our weather example, we need only store $2 \\times(365 + 1000) = 2730$ numbers rather than $365,000$. Given a target rank-$k$, SVD is most often used to find the target low rank-$k$ matrix that best approximates our given matrix $A$. Matrix ranks are approximated in practice Approximate rank deficiency -\nThe condition that A has precisely rank k is of high theoretical interest but is not realistic in practical computations. Frequently, the numbers we use have been measured by some device with finite precision. Thus, it is useful to define the concept of approximate rank.\nRank decomposition is useful when a matrix has a low rank. Here’s a great explainer on why a lot of matrices in practice are low rank, if not can be approximated as low rank matrices which can then be decomposed - Why are so many matrices approximately low rank?\n",
+  "wordCount" : "1476",
+  "inLanguage": "en",
+  "datePublished": "2024-10-10T00:00:00Z",
+  "dateModified": "2024-10-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://pt-10.github.io/posts/matrices-in-practice/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Prashant Tandon",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://pt-10.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://pt-10.github.io/" accesskey="h" title="Prashant Tandon (Alt + H)">Prashant Tandon</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://pt-10.github.io/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://pt-10.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Matrices in Practice
+    </h1>
+    <div class="post-meta"><span title='2024-10-10 00:00:00 +0000 UTC'>October 10, 2024</span>&nbsp;·&nbsp;7 min
+
+</div>
+  </header> 
+  <div class="post-content"><blockquote>
+<p><strong>Matrix Decomposition vs Low Rank Approximation</strong></p>
+</blockquote>
+<p>For the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.</p>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#matrix-decomposition">Matrix Decomposition</a>
+      <ul>
+        <li><a href="#factorization-andor-decomposition">Factorization and(or) Decomposition</a></li>
+        <li><a href="#when-is-any-factorization-useful">When is any factorization useful?</a></li>
+        <li><a href="#rank-factorization">Rank Factorization</a></li>
+      </ul>
+    </li>
+    <li><a href="#low-rank-approximation">Low Rank Approximation</a>
+      <ul>
+        <li><a href="#intuition">Intuition</a></li>
+        <li><a href="#applications">Applications</a></li>
+        <li><a href="#low-rank-approximation-and-rank-factorization">Low rank approximation and Rank factorization</a></li>
+      </ul>
+    </li>
+    <li><a href="#matrix-ranks-are-approximated-in-practice">Matrix ranks are approximated in practice</a></li>
+  </ul>
+</nav>
+
+<h2 id="matrix-decomposition">Matrix Decomposition<a hidden class="anchor" aria-hidden="true" href="#matrix-decomposition">#</a></h2>
+<h3 id="factorization-andor-decomposition">Factorization and(or) Decomposition<a hidden class="anchor" aria-hidden="true" href="#factorization-andor-decomposition">#</a></h3>
+<p>Decomposition is to <strong>break down into parts.</strong> It is the <strong>same</strong> as <strong>factorization.</strong> Just like integers that can be factorized and written as the product of two or more integers, the same is true for matrices.</p>
+<p><em>“Any rectangular matrix can be written as the non-unique product of two or more matrices.”</em></p>
+<p>While the above statement is true, not every possible decomposition is useful.</p>
+<h3 id="when-is-any-factorization-useful">When is any factorization useful?<a hidden class="anchor" aria-hidden="true" href="#when-is-any-factorization-useful">#</a></h3>
+<p>They are essentially used to solve systems of linear equations in an efficient manner. There’s a whole list at <a href="https://en.wikipedia.org/wiki/Matrix_decomposition">Matrix decomposition - Wikipedia</a>.</p>
+<p>Intuitively, a factorization would be useful when the component matrices hold some specific properties, or are smaller - making it easy to compute stuff.</p>
+<h3 id="rank-factorization">Rank Factorization<a hidden class="anchor" aria-hidden="true" href="#rank-factorization">#</a></h3>
+<ul>
+<li>Rank Factorization is a type of matrix decomposition method.</li>
+</ul>
+<p>Let $A$ be a matrix of dimension  $m$ x $n$ with $rank(A) ≥ 1$, then $(P, Q)$ is said to be a rank-factorization of $A$ if:</p>
+<ul>
+<li>$P$ is of order  $m \times k$</li>
+<li>$Q$ is of order $k \times n$ and $A = PQ$.</li>
+</ul>
+<p>Rank factorization of $A_{m \times n} = P_{m \times k}Q_{k \times n}$ where $k = rank(A)$.</p>
+<ul>
+<li><strong>Every finite-dimensional, non-null matrix has a rank decomposition.</strong></li>
+<li><strong>Rank decomposition is non-unique.</strong></li>
+</ul>
+<p>Proof: <a href="https://en.wikipedia.org/wiki/Rank_factorization">Rank factorization - Wikipedia</a> or <a href="https://sam.nitk.ac.in/courses/MA904/rank_factorization.pdf">Rank-Factorization of a Matrix</a></p>
+<p align="center">
+  <img src="images/image.png" alt="Rank Factorization of a matrix" style="max-width: 70%; height: auto;" />
+  <p align="center"><em>Factorizing A as a thin matrix with m rows, fat matrix with n columns.</a></em></p>
+</p>
+<p>Assume that each element in the matrix takes up $b$-bits, then:</p>
+<ul>
+<li>Storing $A$ requires $(m \times n) \times b$ bits of storage.
+Storing $P$ and $Q$ requires $k\times(m+n)\times b$ bits of storage.</li>
+<li>Given a vector $x$, computing $Ax$ requires $m\times n$ flops.
+Given a vector $x$, computing the rank-decomposition of $A$ times $x$ i.e. $P(Qx)$ requires $k\times (m \times n)$ flops.</li>
+</ul>
+<p><strong>Example 1</strong>:</p>
+<p>Consider the following matrices</p>
+<p align="center">
+$A = \begin{pmatrix}1 & 2 & 3 \\\ 4 & 5 & 6 \\\ 7 & 8 & 9 \\\ 10 & 11 & 12\end{pmatrix}$, 
+$P = \begin{pmatrix}1 & 0 \\\ 0 & 1 \\\ 1 & 1 \\\ 1 & 1\end{pmatrix}$, 
+$Q = \begin{pmatrix}1 & 2 & 3 \\\ 4 & 5 & 6\end{pmatrix}$
+</p>
+<p>Reduced row echelon form of $A$ gives us: $\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 0 &amp; -3 &amp; -6 \\ 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0\end{pmatrix}$ where there are only <strong>two non-zero</strong> rows. This tells us that <strong>$A$ has a rank of 2</strong>. Thus, a possible rank factorization of $A$ is $PQ$.</p>
+<p>Here, if $A$ was stored as is, you would store <strong>12 elements</strong>, whereas storing it’s components $P$ and $Q$ implies <strong>14 elements</strong>. Thus factorization didn’t really help in this case.</p>
+<p><strong>Example 2</strong>:</p>
+<p>Now, consider another set of matrices
+<p align="center">
+$A = \begin{pmatrix}10 &amp; 12 &amp; 14 \\ 15 &amp; 18 &amp; 21 \\ 5 &amp; 6 &amp; 7 \\ 20 &amp; 24 &amp; 28\end{pmatrix}$,
+$P = \begin{pmatrix}2 \\ 3 \\ 1 \\ 4\end{pmatrix}$,
+$Q = \begin{pmatrix}5 &amp; 6 &amp; 7\end{pmatrix}$
+</p>
+Reduced row echelon form of A gives us:
+$$\begin{pmatrix} 10 &amp; 12 &amp; 14 \\
+0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0\end{pmatrix}$$</p>
+<p>where there is only <strong>one non-zero</strong> rows. This tells us that <strong>A has a rank of 1</strong>. Thus, a possible rank factorization of $A = PQ$.</p>
+<p>Here, if $A$ was stored as is, you would store <strong>12 elements</strong>, whereas storing it’s components $P$ and $Q$ implies just <strong>7 elements</strong>. Thus factorization helps in this case.</p>
+<h4 id="when-is-rank-factorization-useful">When is rank factorization useful?<a hidden class="anchor" aria-hidden="true" href="#when-is-rank-factorization-useful">#</a></h4>
+<ul>
+<li>
+<p>Rank factorization becomes quite useful when the <strong>rank-$k$</strong> is <strong>relatively small</strong> compared to the matrix dimensions. However, note that a small rank is consequence of the method’s usefulness and not a constraint to begin with.</p>
+<p>Thus, we want $A_{m \times n}$ to be a <strong>low rank matrix</strong> where $k \ll min(m, n)$.</p>
+</li>
+<li>
+<p>The focus here is essentially on storage and compute. Instead of storing the entire matrix as it is, you store its components, making it memory efficient.</p>
+</li>
+</ul>
+<h2 id="low-rank-approximation">Low Rank Approximation<a hidden class="anchor" aria-hidden="true" href="#low-rank-approximation">#</a></h2>
+<p><em>The primary goal is to identify the “best” way to approximate a given matrix A with a rank-k matrix, for a target rank k. Such a matrix is called a low-rank approximation.</em></p>
+<h3 id="intuition">Intuition<a hidden class="anchor" aria-hidden="true" href="#intuition">#</a></h3>
+<p>Here’s an intuitive example of what low rank approximation is and why it would be used: <a href="https://www.ethanepperly.com/index.php/2021/10/26/big-ideas-in-applied-math-low-rank-matrices/#:~:text=Upshot%3A%20A%20matrix%20is%20low,to%20perform%20various%20computations%20rapidly.">Big Ideas in Applied Math: Low-rank Matrices – Ethan N. Epperly (ethanepperly.com)</a></p>
+<p>The example talks about weather data. Say you had 1000 stations recording stats on all 365 days.  You could arrange it as a matrix like -</p>
+<div>
+$$ W = \begin{pmatrix}\text{D}_{1} & \text{D}_{2} &\cdots  & \cdots & \text{D}_{365}\\\text{S}_{1} & \cdots & \cdots & \cdots & \cdots\\\text{S}_{2} & \cdots & \cdots & \cdots & \cdots\\\vdots & \vdots & \vdots & \vdots & \vdots \\\text{S}_{1000} & \cdots & \cdots & \cdots & \cdots \end{pmatrix}_{1000 \times 365} $$
+</div>
+<p>with each column represent a day’s data across all the 1000 stations. That would give us <em>365,000</em> elements.</p>
+<blockquote>
+<p><em>“However, we have reasons to believe that significant compression is possible. Temperatures are correlated across space and time: If it’s hot in Arizona today, it’s likely it was warm in Utah yesterday. If we are particularly bold, we might conjecture that the weather approximately experiences a sinusoidal variation over the course of the year:</em></p>
+</blockquote>
+<p>$$
+\text{temperature at station i on day j} = a_i+ b_isin(2 \pi \times \frac{j}{365} + \phi)
+$$</p>
+<p>For the sake of simplicity and representation, let me denote $sin(2 \pi \times \frac{j}{365} + \phi) = f(j, \phi)$. Hence, our new matrix where each element is approximated would be:</p>
+<div>
+$$ {W} \approx \begin{pmatrix}a_1+ b_1f(1, \phi) & a_1+ b_1f(2, \phi) &\cdots  & a_1+ b_1f(365, \phi)\\\vdots & \vdots & \vdots & \vdots\\a_{1000}+ b_{1000}f(1, \phi) & \cdots & \cdots & a_{1000}+ b_{1000}f(365, \phi)\end{pmatrix} = \hat{W} $$
+</div>
+<p>Notice that for each row you essentially need the coefficients $a_i, b_i$ while the value is then parametrically defined. Thus, in total we would now need <em>1000 a’s and 1000 b’s i.e. 2000</em> numbers instead of <em>365,000</em> to represent our information. Relate this to <a href="https://www.notion.so/The-Basics-11bbceaa96ef806ea8a0c07103f9908f?pvs=21">intrinsic dimensionality</a> as being the minimum pieces of information required to represent your data.</p>
+<p>The matrix $\hat{W}$ has a rank of 2 while $W$ has a maximal possible rank of 365 (since it is the minimum of two dimensional factors of the matrix).</p>
+<blockquote>
+<p><em>“This example is suggestive that <a href="https://en.wikipedia.org/wiki/Low-rank_approximation">low-rank approximation</a>, where we approximate a general matrix by one of much lower rank, could be a powerful tool.”</em></p>
+</blockquote>
+<h3 id="applications">Applications<a hidden class="anchor" aria-hidden="true" href="#applications">#</a></h3>
+<p>Examples from <a href="https://homes.cs.washington.edu/~jrl/cse422wi24/notes/svd.pdf">CSE 422 Lecture 9 at UW</a></p>
+<ul>
+<li><strong>Image Compression:</strong>
+Let $A$ represent an image (with entries = pixel intensities). $m$ and $n$ are typically in the 100s. In With images, a modest value of $k$ (say 100 or 150) is usually enough to achieve approximations that look a lot like the original image.</li>
+<li><strong>De-noising:</strong>
+If $A$ is a noisy version of some “ground truth” signal that is approximately low-rank, then passing to a low-rank approximation of the raw data $A$ might throw out lots of noise and little signal, resulting in a matrix that is actually more informative than the original.</li>
+</ul>
+<h3 id="low-rank-approximation-and-rank-factorization">Low rank approximation and Rank factorization<a hidden class="anchor" aria-hidden="true" href="#low-rank-approximation-and-rank-factorization">#</a></h3>
+<ul>
+<li>Low rank approximation is essentially finding a matrix of lower rank that closely compares to the original matrix. Hence, there is always some loss of information.</li>
+<li>Not every matrix is well-approximated by one of small rank. A matrix may be excellently approximated by a rank-100 matrix and horribly approximated by a rank-90 matrix.</li>
+<li>Rank factorization on the other hand is simply representing a low rank matrix as a product of two matrices with maximal rank $k &laquo; min(m,n)$.</li>
+<li>For example, if we store a rank factorization of the low-rank approximation from our weather example, we need only store $2 \times(365 + 1000) = 2730$ numbers rather than $365,000$.</li>
+<li>Given a target rank-$k$, SVD is most often used to find the target low rank-$k$ matrix that best approximates our given matrix $A$.</li>
+</ul>
+<h2 id="matrix-ranks-are-approximated-in-practice">Matrix ranks are approximated in practice<a hidden class="anchor" aria-hidden="true" href="#matrix-ranks-are-approximated-in-practice">#</a></h2>
+<p><a href="https://amath.colorado.edu/faculty/martinss/Teaching/APPM5720_2016s/notes05.pdf"><strong>Approximate rank deficiency</strong> -</a></p>
+<blockquote>
+<p><em>The condition that A has precisely rank k is of high theoretical interest but is not realistic in practical computations. Frequently, the numbers we use have been measured by some device with finite precision. Thus, it is useful to define the concept of <strong>approximate rank.</strong></em></p>
+</blockquote>
+<p>Rank decomposition is useful when a matrix has a low rank. Here’s a great explainer on why a lot of matrices in practice are low rank, if not can be approximated as low rank matrices which can then be decomposed - <a href="https://www.ethanepperly.com/index.php/2021/10/26/big-ideas-in-applied-math-low-rank-matrices/#why-are-so-many-matrices-approximately-low-rank"><em>Why are so many matrices approximately low rank?</em></a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://pt-10.github.io/">Prashant Tandon</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+    
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+  integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib"
+  crossorigin="anonymous"
+/>
+
+
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
+  integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
+  crossorigin="anonymous">
+</script>
+
+
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+  crossorigin="anonymous">
+</script>
+
+
+<script defer>
+  window.addEventListener("DOMContentLoaded", function () {
+    if (typeof renderMathInElement !== "undefined") {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "\\[", right: "\\]", display: true},
+          {left: "$$", right: "$$", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    } else {
+      console.warn("KaTeX auto-render not available.");
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

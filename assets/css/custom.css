@@ -1,0 +1,24 @@
+/* Remove bullets and indentation */
+.toc ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.toc li {
+  margin: 0.2em 0;
+}
+
+/* TOC link styles */
+.toc a {
+  color: rgba(255, 255, 255, 0.7); /* dull white */
+  text-decoration: none;
+  font-weight: normal;
+  transition: all 0.2s ease-in-out;
+}
+
+/* On hover: make it bold and fully white */
+.toc a:hover {
+  color: #fff;
+  font-weight: bold;
+}

@@ -6,17 +6,27 @@
     <description>Recent content on Prashant Tandon</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Feb 2025 12:24:33 +0530</lastBuildDate><atom:link href="https://pt-10.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pt-10.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matrices in Practice</title>
+      <link>https://pt-10.github.io/posts/matrices-in-practice/</link>
+      <pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://pt-10.github.io/posts/matrices-in-practice/</guid>
+      <description>Matrix Decomposition vs Low Rank Approximation
+For the sake of clarity, I shall diverge and dive a little deeper into the nuances. I believe it becomes important to give the terms the attention they deserve, wherein the lack of leads to a lot of confusion.
+Matrix Decomposition Factorization and(or) Decomposition When is any factorization useful? Rank Factorization Low Rank Approximation Intuition Applications Low rank approximation and Rank factorization Matrix ranks are approximated in practice Matrix Decomposition Factorization and(or) Decomposition Decomposition is to break down into parts.</description>
+    </item>
+    
     <item>
       <title>The Basics</title>
       <link>https://pt-10.github.io/posts/the-basics/</link>
-      <pubDate>Wed, 05 Feb 2025 12:24:33 +0530</pubDate>
+      <pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate>
       
       <guid>https://pt-10.github.io/posts/the-basics/</guid>
-      <description>A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
+      <description>Linear Independence Intrinsic Dimensionality Intuition Formal Definition Notion of Vector Span and Linear Independence Rank Intuition Formal Definition A primer to a few key concepts in linear algebra that would eventually help build the intuition behind Low Rank Adaptation (LoRA), subsequently QLoRA.
 Linear Independence Two vectors are considered linearly independent if neither can be expressed as a scalar multiple of the other.
-Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:
-$$ \vec{v} = \begin{bmatrix} 1 \ 2 \end{bmatrix}, \quad \vec{w} = \begin{bmatrix} 3 \ 4 \end{bmatrix} $$</description>
+Let us consider two vectors $\mathbf{v}, \mathbf{w} \in \mathbb{R}^2$:</description>
     </item>
     
     <item>
