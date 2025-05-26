@@ -18,6 +18,10 @@
         {{- block "main" . }}{{ end }}
     </main>
     {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+
+    {{/* Include math partial here to load KaTeX scripts after all content */}}
+    {{ partial "math.html" . }}
+
 </body>
 
 </html>
