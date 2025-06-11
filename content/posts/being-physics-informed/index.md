@@ -1,7 +1,6 @@
 +++
 title = 'Being Physics Informed'
 date = "2025-06-10T01:40:53+05:30"
-draft = true
 +++
 
 > I've been fascinated with physics simulations, I follow F1, and I wanted to learn about PINNs. So I asked GPT to come up with a 2-day plan to equip me with the priors.
