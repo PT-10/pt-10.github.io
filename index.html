@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#efeee9">
+  <meta name="description" content="Prashant Tandon's personal corner of the internet: spatial AI, code, writing, sound, and photography.">
+  <title>Prashant Tandon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@19.0.0",
+      "react/": "https://esm.sh/react@19.0.0/",
+      "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+      "react-markdown": "https://esm.sh/react-markdown@9.0.1",
+      "remark-math": "https://esm.sh/remark-math@6.0.0",
+      "rehype-katex": "https://esm.sh/rehype-katex@7.0.0",
+      "remark-gfm": "https://esm.sh/remark-gfm@4.0.0",
+      "rehype-raw": "https://esm.sh/rehype-raw@7.0.0",
+      "rehype-slug": "https://esm.sh/rehype-slug@6.0.0",
+      "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@16.1.0?external=react",
+      "react-syntax-highlighter/dist/esm/styles/prism": "https://esm.sh/react-syntax-highlighter@16.1.0/dist/esm/styles/prism?external=react"
+    }
+  }
+  </script>
+  <script src="blog-data.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="terrain-bg.js" defer></script>
+  <script src="blog-app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#work">Skip to work</a>
+  <main id="top">
+    <section class="hero" id="home" aria-labelledby="hero-title"><canvas id="terrain-bg" aria-hidden="true"></canvas><div class="hero-main"><div class="hero-text"><h1 id="hero-title">hi, i'm prashant!</h1><p>I’m interested in how we can represent the physical world so models can reason about it and act more reliably in the real world.</p><p><strong>Unpopular opinion</strong> – LLMs don't reason and are at the end of the day just next token predictors. Reasoning is philosophical and goes beyond mere definition, read more <a href="https://plato.stanford.edu/entries/chinese-room" target="_blank" rel="noopener noreferrer">here</a>.</p><blockquote class="hero-callout">I'm currently <strong>seeking research-oriented roles both in academia and industry</strong> around physical AI, reasoning models, generative models and GPU acceleration.</blockquote><nav class="social-icons" aria-label="Elsewhere"><a href="https://github.com/PT-10" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a><a href="https://x.com/anthropdon" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg></a><a href="https://scholar.google.com/citations?hl=en&amp;user=dCsAQLUAAAAJ" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.24 13.77 0 9.5 12 0l12 9.5-5.24 4.27C17.55 11.25 14.98 9.5 12 9.5s-5.55 1.75-6.76 4.27zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg></a></nav></div></div></section>
+
+    <section class="work-section" id="work" aria-labelledby="work-heading"><div class="section-heading"><h2 id="work-heading">projects<span>.</span></h2></div>
+        <div class="project-grid">
+          <a class="project-card project-dit" href="#/blog/scratch-dit" data-return="work"><div class="project-art"><span class="art-corner">P/01</span><div class="dit-art"><span></span><span></span><span></span><span></span><span></span></div><span class="art-caption">DIFFUSION / TRANSFORMERS</span></div><div class="project-info"><div><span class="project-type">IMPLEMENTATION · PYTORCH</span><h3>scratch-DiT</h3><p>A pure PyTorch implementation of Diffusion Transformers.</p></div><span class="project-link" aria-hidden="true">↗</span></div></a>
+          <a class="project-card project-cuda" href="#/blog/the-cuda-worklog" data-return="work"><div class="project-art"><span class="art-corner">P/02</span><div class="cuda-art"><span>100</span><small>.cu</small><div class="cuda-lines"></div></div><span class="art-caption">A HUNDRED DAYS / CUDA</span></div><div class="project-info"><div><span class="project-type">LEARNING LOG · CUDA</span><h3>100.cu</h3><p>A hundred days of CUDA, documented in code.</p></div><span class="project-link" aria-hidden="true">↗</span></div></a>
+          <a class="project-card project-puzzle" href="#/blog/dropped-a-neural-net" data-return="work"><div class="project-art"><span class="art-corner">P/03</span><div class="puzzle-art"><span class="puzzle-node">●</span><span class="puzzle-node">●</span><span class="puzzle-node">●</span><span class="puzzle-node">●</span><span class="puzzle-node">●</span><span class="puzzle-node">●</span><span class="puzzle-label">? → !</span></div><span class="art-caption">A PUZZLE / A SOLUTION</span></div><div class="project-info"><div><span class="project-type">PUZZLE · PYTHON</span><h3>droppedaneuralnet</h3><p>My solution to Jane Street's “dropped a neural net” puzzle.</p></div><span class="project-link" aria-hidden="true">↗</span></div></a>
+        </div>
+    </section>
+
+    <section class="writing-section" id="blogs" aria-labelledby="blogs-heading"><div class="section-heading"><h2 id="blogs-heading">blogs<span>.</span></h2></div><div id="blog-app" aria-live="polite"></div>
+    </section>
+
+    <section class="sound-section" id="sound" aria-labelledby="sound-heading"><div class="sound-top"><h2 id="sound-heading">sound<span>.</span></h2></div><div class="waveform" id="sound-waveform" aria-hidden="true"></div><div class="sound-links"><a href="https://soundcloud.com/tndn_wav" target="_blank" rel="noopener noreferrer">SoundCloud ↗</a><a href="https://www.youtube.com/@tndn_wav" target="_blank" rel="noopener noreferrer">YouTube ↗</a></div></section>
+
+    <section class="photography-section" id="photography" aria-labelledby="photography-heading"><div class="photo-top"><h2 id="photography-heading">photography<span>.</span></h2><p>A selection of my photographs will go here.</p></div></section>
+
+  </main>
+  <nav class="section-tabs" aria-label="Sections"><a href="#home"><span>home</span></a><a href="#work"><span>projects</span></a><a href="#blogs"><span>blogs</span></a><a href="#sound"><span>sound</span></a><a href="#photography"><span>photography</span></a></nav>
+  <button id="theme-toggle" class="theme-switch" type="button" role="switch" aria-label="Dark mode" aria-checked="false"><span class="theme-switch-knob" aria-hidden="true"></span></button>
+</body>
+</html>
